@@ -40,3 +40,11 @@ Here is a small guide on how to add translations: [Translation Guide](./Assets/S
 
 ## Building
 See [BUILD.md](./BUILD.md)
+
+## Build android
+- Remove "Asset/UnityCapture".
+- Select "File" - "Build Setting" menu.
+- Select Andoid in "Platform" menu and click "Switch Platform".
+- Click "Build" button and write output name.
+- Check the "[output_name].apk file.
+- Run "adb install [output_name].apk" for install.

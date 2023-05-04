@@ -34,7 +34,8 @@ namespace HardCoded.VRigUnity {
 			get {
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
-					if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.OpenGLES3 && _openGlEsConfig != null) {
+		 			//* Patch android.
+					if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 && _openGlEsConfig != null) {
 						return ConfigType.OpenGLES;
 					}
 #endif
