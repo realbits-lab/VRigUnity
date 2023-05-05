@@ -48,3 +48,6 @@ See [BUILD.md](./BUILD.md)
 - Click "Build" button and write output name.
 - Check the "[output_name].apk file.
 - Run "adb install [output_name].apk" for install.
+
+## Debug android
+- Run "adb logcat --pid=$(adb shell pidof -s com.HardCoded.VRigUnity)"

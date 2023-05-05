@@ -114,13 +114,13 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_TILEMAP
 --compilation-defines=ENABLE_TIMELINE
 --compilation-defines=ENABLE_LEGACY_INPUT_MANAGER
---compilation-defines=CSHARP_7_OR_LATER
---compilation-defines=CSHARP_7_3_OR_NEWER
 --compilation-defines=PACKAGE_PHYSICS
 --compilation-defines=PACKAGE_PHYSICS2D
 --compilation-defines=PACKAGE_TILEMAP
 --compilation-defines=PACKAGE_ANIMATION
 --compilation-defines=PACKAGE_UITOOLKIT
+--compilation-defines=CSHARP_7_OR_LATER
+--compilation-defines=CSHARP_7_3_OR_NEWER
 --compilation-defines=MODULE_AI_EXISTS
 --compilation-defines=MODULE_ANIMATION_EXISTS
 --compilation-defines=MODULE_PHYSICS_EXISTS
@@ -131,8 +131,8 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_SPRINGBONE_BURST
 --generate-link-xml=Temp/burst.link.xml
 --output=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/tempburstlibs/armeabi-v7a/lib_burst_generated
---root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll
+--root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/Unity.VisualScripting.Flow.dll
 --root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/UniGLTF.dll
 --root-assembly=/Users/thomasjeon/GitHub/@dev.realbits/VRigUnity/Temp/StagingArea/Data/Managed/Unity.Mathematics.dll

@@ -32,6 +32,9 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void SetCamera(bool enable) {
+			Debug.Log("-- call SetCamera()");
+			Debug.Log("-- enable: " + enable);
+
 			buttonImage.color = enable ? toggleOffColor : toggleOnColor;
 			isCameraShowing = enable;
 			UpdateLanguage();
@@ -42,6 +45,8 @@ namespace HardCoded.VRigUnity {
 					SetCamera(false);
 				});
 			} else {
+				Debug.Log("-- SolutionUtils.GetSolution().Model: " + SolutionUtils.GetSolution().Model);
+
 				SolutionUtils.GetSolution().Model.ResetVRMAnimator();
 				SolutionUtils.GetSolution().Stop();
 			}

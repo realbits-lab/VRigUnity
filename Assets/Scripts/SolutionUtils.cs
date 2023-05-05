@@ -11,6 +11,7 @@ namespace HardCoded.VRigUnity {
 			if (_solution == null) {
 				GameObject gameObject = GameObject.FindGameObjectWithTag("Solution");
 				if (gameObject == null) {
+					Debug.Log("gameObject is null.");
 					return null;
 				}
 
