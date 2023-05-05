@@ -86,3 +86,4 @@ TempFolder/
 # Temp
 .curl/
 .version
+.DS_Store

@@ -32,6 +32,13 @@ namespace HardCoded.VRigUnity {
 		public InferenceMode inferenceMode => configType == ConfigType.CPU ? InferenceMode.Cpu : InferenceMode.Gpu;
 		public virtual ConfigType configType {
 			get {
+				Debug.Log("-- GpuManager.IsInitialized: " + GpuManager.IsInitialized);
+				Debug.Log("-- SystemInfo.graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
+				Debug.Log("-- _openGlEsConfig: " + _openGlEsConfig);
+				Debug.Log("-- _gpuConfig: " + _gpuConfig);
+				Debug.Log("-- _cpuConfig: " + _cpuConfig);
+				Debug.Log("-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: " + UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3);
+
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
 		 			//* Patch android.
