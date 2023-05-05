@@ -83,17 +83,17 @@ node {
   output_stream: "RIGHT_HAND_LANDMARKS:right_hand_landmarks"
 }
 
-node: {
-  calculator: "ImageTransformationCalculator"
-  input_stream: "IMAGE_GPU:segmentation_mask_gpu"
-  input_side_packet: "ROTATION_DEGREES:output_rotation"
-  input_side_packet: "FLIP_HORIZONTALLY:output_horizontally_flipped"
-  input_side_packet: "FLIP_VERTICALLY:output_vertically_flipped"
-  output_stream: "IMAGE_GPU:segmentation_mask_unrotated_gpu"
-}
+# node: {
+#   calculator: "ImageTransformationCalculator"
+#   input_stream: "IMAGE_GPU:segmentation_mask_gpu"
+#   input_side_packet: "ROTATION_DEGREES:output_rotation"
+#   input_side_packet: "FLIP_HORIZONTALLY:output_horizontally_flipped"
+#   input_side_packet: "FLIP_VERTICALLY:output_vertically_flipped"
+#   output_stream: "IMAGE_GPU:segmentation_mask_unrotated_gpu"
+# }
 
-node: {
-  calculator: "GpuBufferToImageFrameCalculator"
-  input_stream: "segmentation_mask_unrotated_gpu"
-  output_stream: "segmentation_mask"
-}
+# node: {
+#   calculator: "GpuBufferToImageFrameCalculator"
+#   input_stream: "segmentation_mask_unrotated_gpu"
+#   output_stream: "segmentation_mask"
+# }

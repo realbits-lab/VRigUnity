@@ -15,6 +15,7 @@ namespace HardCoded.VRigUnity {
 		private static string _AssetPathRoot;
 
 		public AssetManager() : base() {
+			Debug.Log("Application.streamingAssetsPath: " + Application.streamingAssetsPath);
 			_AssetPathRoot = Path.Combine(Application.streamingAssetsPath, "mediapipe");
 			_CachePathRoot = Path.Combine(Application.persistentDataPath, "mediapipe");
 		}
@@ -31,7 +32,10 @@ namespace HardCoded.VRigUnity {
 				yield break;
 			}
 
+	 		//* TODO: In case of android, handle streaming assets
+			//* TODO: https://github.com/gwiazdorrr/BetterStreamingAssets
 			var sourceFilePath = GetAssetPathFor(name);
+			Debug.Log("sourceFilePath: " + sourceFilePath);
 			if (!File.Exists(sourceFilePath)) {
 				Logger.Info(_TAG, $"{name} will not be copied because it was not found. Destination was {destFilePath}");
 				throw new Exception($"{name} will not be copied because it was not found. Destination was {destFilePath}");

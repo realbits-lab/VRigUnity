@@ -32,16 +32,19 @@ namespace HardCoded.VRigUnity {
 		public InferenceMode inferenceMode => configType == ConfigType.CPU ? InferenceMode.Cpu : InferenceMode.Gpu;
 		public virtual ConfigType configType {
 			get {
+				// Debug.Log("-- _openGlEsConfig: " + _openGlEsConfig);
+				// Debug.Log("-- _gpuConfig: " + _gpuConfig);
+				// Debug.Log("-- _cpuConfig: " + _cpuConfig);
 				Debug.Log("-- GpuManager.IsInitialized: " + GpuManager.IsInitialized);
 				Debug.Log("-- SystemInfo.graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
-				Debug.Log("-- _openGlEsConfig: " + _openGlEsConfig);
-				Debug.Log("-- _gpuConfig: " + _gpuConfig);
-				Debug.Log("-- _cpuConfig: " + _cpuConfig);
 				Debug.Log("-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: " + UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3);
 
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
 		 			//* Patch android.
+					//* In case of samsung note 10, graphic device type is vulkan.
+					return ConfigType.OpenGLES;
+
 					if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 && _openGlEsConfig != null) {
 						return ConfigType.OpenGLES;
 					}
