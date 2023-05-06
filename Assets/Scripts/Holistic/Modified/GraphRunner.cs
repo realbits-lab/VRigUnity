@@ -41,7 +41,7 @@ namespace HardCoded.VRigUnity {
 
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
-		 			//* Patch android.
+		 			//* TODO: Patch android.
 					//* In case of samsung note 10, graphic device type is vulkan.
 					return ConfigType.OpenGLES;
 
@@ -150,16 +150,43 @@ namespace HardCoded.VRigUnity {
 			CalculatorGraph.AddPacketToInputStream(streamName, packet).AssertOk();
 		}
 
+		//* TODO: Android patch.
+		//* NOTE: To support IL2CPP, DeletionCallback must be static.
+		[AOT.MonoPInvokeCallback(typeof(GlTextureBuffer.DeletionCallback))]
+		private static void OnRelease(uint textureName, IntPtr syncTokenPtr)
+		{
+			if (syncTokenPtr == IntPtr.Zero)
+			{
+				return;
+			}
+			using (var glSyncToken = new GlSyncPoint(syncTokenPtr))
+			{
+				glSyncToken.Wait();
+			}
+		}
+
 		protected void AddTextureFrameToInputStream(string streamName, Texture2D texture) {
 			latestTimestamp = GetCurrentTimestamp();
 
-			/*
-			if (configType == ConfigType.OpenGLES) {
-				var gpuBuffer = textureFrame.BuildGpuBuffer(GpuManager.GlCalculatorHelper.GetGlContext());
-				AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
-				return;
-			}
-			*/
+#if UNITY_ANDROID
+			//* TODO: Handle GpuBuffer instead of ImageFrame.
+			// if (configType == ConfigType.OpenGLES) {
+			// 	var gpuBuffer = texture.BuildGpuBuffer(GpuManager.GlCalculatorHelper.GetGlContext());
+			// 	AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
+			// 	return;
+			// }
+
+			var glTextureName = (uint)texture.GetNativeTexturePtr();
+			//* BGRA32 is the only supported format currently.
+			var glBufferFormat = GpuBufferFormat.kBGRA32;
+			var glContext = GpuManager.GlCalculatorHelper.GetGlContext();
+			var glTextureBuffer = new GlTextureBuffer(glTextureName, texture.width, texture.height,
+																								glBufferFormat, OnRelease, glContext);
+			var gpuBuffer = new GpuBuffer(glTextureBuffer);
+
+			AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
+			return;
+#endif
 
 			var width = texture.width;
 			var height = texture.height;
@@ -227,8 +254,13 @@ namespace HardCoded.VRigUnity {
 		}
 
 		protected WaitForResult WaitForAsset(string assetName) {
+#if UNITY_ANDROID
+			bool overwrite = false;
+			return new WaitForResult(this, SolutionUtils.GetStreamingAssetsResourceManager().PrepareAssetAsync(assetName, assetName, overwrite));
+#else
 			bool overwrite = false;
 			return new WaitForResult(this, SolutionUtils.GetAssetManager().PrepareAssetAsync(assetName, assetName, overwrite));
+#endif
 		}
 
 		protected abstract IList<WaitForResult> RequestDependentAssets();

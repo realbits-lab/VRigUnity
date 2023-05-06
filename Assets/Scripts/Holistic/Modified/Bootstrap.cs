@@ -11,9 +11,14 @@ namespace HardCoded.VRigUnity {
 		public bool IsFinished { get; private set; }
 		public InferenceMode InferenceMode { get; private set; }
 		private AssetManager _assetManager;
+		private StreamingAssetsResourceManager _streamingAssetResourceManager;
 
 		private void OnEnable() {
 			var _ = StartCoroutine(Init());
+		}
+
+		public StreamingAssetsResourceManager GetStreamingAssetsResourceManager() {
+			return _streamingAssetResourceManager;
 		}
 
 		public AssetManager GetAssetManager() {
@@ -65,8 +70,14 @@ namespace HardCoded.VRigUnity {
 			// Initialize mediapipe
 			Protobuf.SetLogHandler(Protobuf.DefaultLogHandler);
 			
+//* TODO: Patch android.
+#if UNITY_ANDROID
+			Logger.Info(_TAG, "Initializing StreamingAssetResourceManager...");
+			_streamingAssetResourceManager = new StreamingAssetsResourceManager();
+#else
 			Logger.Info(_TAG, "Initializing AssetManager...");
 			_assetManager = new AssetManager();
+#endif
 
 			DecideInferenceMode();
 			if (InferenceMode == InferenceMode.Gpu) {

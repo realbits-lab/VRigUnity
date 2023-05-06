@@ -78,7 +78,7 @@ namespace HardCoded.VRigUnity {
 		public static void UninstallVirtualCamera() {
 			// TODO: Implement
 		}
-//* Patch android.
+//* TODO: Patch android.
 #else
 		public static void InstallVirtualCamera() {
 		}
