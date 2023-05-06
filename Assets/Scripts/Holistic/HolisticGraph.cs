@@ -166,6 +166,10 @@ namespace HardCoded.VRigUnity {
 			var outputRotation = imageSource.Rotation;
 			var outputHorizontallyFlipped = !isInverted && imageSource.IsHorizontallyFlipped ^ true;
 			var outputVerticallyFlipped = (imageSource.IsVerticallyFlipped) ^ (isInverted && imageSource.IsHorizontallyFlipped);
+			Logger.Info(TAG, $"outputHorizontallyFlipped: {outputHorizontallyFlipped}");
+			Logger.Info(TAG, $"outputVerticallyFlipped: {outputVerticallyFlipped}");
+			Logger.Info(TAG, $"outputRotation: {outputRotation}");
+			Logger.Info(TAG, $"RotationAngle.Rotation180: {RotationAngle.Rotation180}");
 
 			if ((outputHorizontallyFlipped && outputVerticallyFlipped) || outputRotation == RotationAngle.Rotation180) {
 				outputRotation = outputRotation.Add(RotationAngle.Rotation180);

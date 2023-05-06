@@ -53,11 +53,16 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void OnFaceLandmarks(HolisticLandmarks landmarks) {
+			Logger.Info(TAG, $"call OnFaceLandmarks()");
+			Logger.Info(TAG, $"landmarks: {landmarks}");
+			Logger.Info(TAG, $"landmarks.IsPresent: {landmarks.IsPresent}");
+
 			if (!landmarks.IsPresent) {
 				return;
 			}
 
 			DataGroups.FaceData face = FaceResolver.Solve(landmarks);
+			Logger.Info(TAG, $"face: {face}");
 			Face.mouthOpen = face.mouthOpen;
 			Face.lEyeIris.Add(face.lEyeIris);
 			Face.rEyeIris.Add(face.rEyeIris);

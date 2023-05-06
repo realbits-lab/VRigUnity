@@ -4,6 +4,11 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
+//* TODO: Android patch.
+#if UNITY_ANDROID
+using UnityEngine.Android;
+#endif
+
 namespace HardCoded.VRigUnity {
 	public class WebCamSource : ImageSource {
 		private const string _TAG = nameof(WebCamSource);
@@ -100,6 +105,32 @@ namespace HardCoded.VRigUnity {
 					yield break;
 				}
 
+//* TODO: Android patch.
+#if UNITY_ANDROID
+        if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+          Permission.RequestUserPermission(Permission.Camera);
+          yield return new WaitForSeconds(0.1f);
+        }
+#elif UNITY_IOS
+        if (!Application.HasUserAuthorization(UserAuthorization.WebCam)) {
+          yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+        }
+#endif
+
+#if UNITY_ANDROID
+        if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+          Logger.Warning(_TAG, "Not permitted to use Camera");
+          yield break;
+        }
+#elif UNITY_IOS
+        if (!Application.HasUserAuthorization(UserAuthorization.WebCam)) {
+          Logger.Warning(_TAG, "Not permitted to use WebCam");
+          yield break;
+        }
+#endif
+
 				_IsPermitted = true;
 
 				yield return new WaitForEndOfFrame();
@@ -139,9 +170,13 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void InitializeWebCamTexture() {
+			Logger.Verbose("call InitializeWebCamTexture()");
 			Stop();
 			if (webCamDevice is WebCamDevice valueOfWebCamDevice) {
-				webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, Resolution.width, Resolution.height, (int)Resolution.frameRate);
+				//* TODO: Android patch test.
+				Logger.Verbose($"valueOfWebCamDevice.name: {valueOfWebCamDevice.name}");
+				// webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, Resolution.width, Resolution.height, (int)Resolution.frameRate);
+				webCamTexture = new WebCamTexture("Camera 1", Resolution.width, Resolution.height, (int)Resolution.frameRate);
 				return;
 			}
 
