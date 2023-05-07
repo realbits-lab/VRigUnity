@@ -162,6 +162,8 @@ namespace HardCoded.VRigUnity {
 
 			SetImageTransformationOptions(sidePacket, imageSource);
 			// The orientation of the output image must match that of the input image.
+			Logger.Debug($"imageSource.Rotation: {imageSource.Rotation}");
+
 			var isInverted = Mediapipe.Unity.CoordinateSystem.ImageCoordinate.IsInverted(imageSource.Rotation);
 			var outputRotation = imageSource.Rotation;
 			var outputHorizontallyFlipped = !isInverted && imageSource.IsHorizontallyFlipped ^ true;
@@ -172,6 +174,8 @@ namespace HardCoded.VRigUnity {
 			Logger.Info(TAG, $"RotationAngle.Rotation180: {RotationAngle.Rotation180}");
 
 			if ((outputHorizontallyFlipped && outputVerticallyFlipped) || outputRotation == RotationAngle.Rotation180) {
+				Logger.Debug("Add Rotation180");
+
 				outputRotation = outputRotation.Add(RotationAngle.Rotation180);
 				outputHorizontallyFlipped = !outputHorizontallyFlipped;
 				outputVerticallyFlipped = !outputVerticallyFlipped;

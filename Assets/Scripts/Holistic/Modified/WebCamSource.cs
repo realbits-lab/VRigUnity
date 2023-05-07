@@ -177,6 +177,8 @@ namespace HardCoded.VRigUnity {
 				Logger.Verbose($"valueOfWebCamDevice.name: {valueOfWebCamDevice.name}");
 				// webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, Resolution.width, Resolution.height, (int)Resolution.frameRate);
 				webCamTexture = new WebCamTexture("Camera 1", Resolution.width, Resolution.height, (int)Resolution.frameRate);
+				Logger.Verbose($"webCamTexture: {webCamTexture}");
+				Logger.Verbose($"webCamTexture.videoRotationAngle: {webCamTexture.videoRotationAngle}");
 				return;
 			}
 

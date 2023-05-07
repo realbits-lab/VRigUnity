@@ -233,12 +233,7 @@ namespace HardCoded.VRigUnity {
 			// NOTE: The origin is left-bottom corner in Unity, and right-top corner in MediaPipe.
 
 			// TODO: Check if this code can be removed?
-//* TODO: Android patch.
-#if UNITY_ANDROID
-			Rotation = imageSource.Rotation;
-#else
 			Rotation = imageSource.Rotation.Reverse();
-#endif
 			var inputRotation = Rotation;
 			var isInverted = Mediapipe.Unity.CoordinateSystem.ImageCoordinate.IsInverted(Rotation);
 			var shouldBeMirrored = imageSource.IsHorizontallyFlipped ^ expectedToBeMirrored ^ true;
