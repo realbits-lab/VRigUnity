@@ -53,13 +53,13 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void OnFaceLandmarks(HolisticLandmarks landmarks) {
-			// Logger.Info(TAG, $"call OnFaceLandmarks()");
-			// Logger.Info(TAG, $"landmarks: {landmarks}");
-			// Logger.Info(TAG, $"landmarks.IsPresent: {landmarks.IsPresent}");
-
 			if (!landmarks.IsPresent) {
 				return;
 			}
+
+			Logger.Info(TAG, $"call OnFaceLandmarks()");
+			// Logger.Info(TAG, $"landmarks: {landmarks}");
+			Logger.Info(TAG, $"landmarks.IsPresent: {landmarks.IsPresent}");
 
 			DataGroups.FaceData face = FaceResolver.Solve(landmarks);
 			// Logger.Info(TAG, $"face: {face}");
@@ -90,11 +90,14 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void OnPoseLandmarks(HolisticLandmarks landmarks) {
+
 			bool trackL = true;
 			bool trackR = true;
 
 			// Use these fields to get the value
 			if (landmarks.IsPresent && Settings.UseTrackingBox) {
+				Logger.Info(TAG, $"call OnPoseLandmarks()");
+				Logger.Info(TAG, $"landmarks.IsPresent: {landmarks.IsPresent}");
 				var leftWrist = landmarks[MediaPipe.Pose.LEFT_WRIST];
 				var rightWrist = landmarks[MediaPipe.Pose.RIGHT_WRIST];
 				trackR = TrackingBox.IsInside(rightWrist.x, 1 - rightWrist.y);
@@ -109,6 +112,9 @@ namespace HardCoded.VRigUnity {
 			if (!landmarks.IsPresent) {
 				return;
 			}
+
+			Logger.Info(TAG, $"call OnPoseWorldLandmarks()");
+			Logger.Info(TAG, $"landmarks.IsPresent: {landmarks.IsPresent}");
 
 			DataGroups.PoseData pose = PoseResolver.SolvePose(landmarks);
 

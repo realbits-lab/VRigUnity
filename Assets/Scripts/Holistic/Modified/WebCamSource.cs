@@ -27,10 +27,13 @@ namespace HardCoded.VRigUnity {
 			new(640, 480, 30),
 			new(640, 360, 30),
 			new(424, 240, 30),
-			new(320, 180, 30), // 320x240 -> 16:19 better
+			//* TODO: Android patch.
+			// new(320, 180, 30), // 320x240 -> 16:19 better
+			new(320, 180, 10), // 320x240 -> 16:19 better
 			new(176, 144, 30),
 		};
-		public ResolutionStruct DefaultResolution => AvailableResolutions[6];
+		// public ResolutionStruct DefaultResolution => AvailableResolutions[6];
+		public ResolutionStruct DefaultResolution => AvailableResolutions[8];
 
 		public override Texture CurrentTexture => webCamTexture;
 		public override int TextureWidth => IsPrepared ? webCamTexture.width : 0;
