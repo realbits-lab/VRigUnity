@@ -24,7 +24,9 @@ namespace HardCoded.VRigUnity {
 
 			// By default these should be false
 			ShowBackground(false);
-			ShowWebcam(false);
+			//* TODO: Android patch.
+			// ShowWebcam(false);
+			ShowWebcam(true);
 		}
 
 		// Set if the background should be enabled or not

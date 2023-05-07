@@ -35,15 +35,15 @@ namespace HardCoded.VRigUnity {
 				// Debug.Log("-- _openGlEsConfig: " + _openGlEsConfig);
 				// Debug.Log("-- _gpuConfig: " + _gpuConfig);
 				// Debug.Log("-- _cpuConfig: " + _cpuConfig);
-				Debug.Log("-- GpuManager.IsInitialized: " + GpuManager.IsInitialized);
-				Debug.Log("-- SystemInfo.graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
-				Debug.Log("-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: " + UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3);
+				// Debug.Log("-- GpuManager.IsInitialized: " + GpuManager.IsInitialized);
+				// Debug.Log("-- SystemInfo.graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
+				// Debug.Log("-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: " + UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3);
 
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
 		 			//* TODO: Patch android.
 					//* In case of samsung note 10, graphic device type is vulkan.
-					return ConfigType.OpenGLES;
+					return ConfigType.GPU;
 
 					if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 && _openGlEsConfig != null) {
 						return ConfigType.OpenGLES;
@@ -176,16 +176,16 @@ namespace HardCoded.VRigUnity {
 			// 	return;
 			// }
 
-			var glTextureName = (uint)texture.GetNativeTexturePtr();
-			//* BGRA32 is the only supported format currently.
-			var glBufferFormat = GpuBufferFormat.kBGRA32;
-			var glContext = GpuManager.GlCalculatorHelper.GetGlContext();
-			var glTextureBuffer = new GlTextureBuffer(glTextureName, texture.width, texture.height,
-																								glBufferFormat, OnRelease, glContext);
-			var gpuBuffer = new GpuBuffer(glTextureBuffer);
+			// var glTextureName = (uint)texture.GetNativeTexturePtr();
+			// //* BGRA32 is the only supported format currently.
+			// var glBufferFormat = GpuBufferFormat.kBGRA32;
+			// var glContext = GpuManager.GlCalculatorHelper.GetGlContext();
+			// var glTextureBuffer = new GlTextureBuffer(glTextureName, texture.width, texture.height,
+			// 																					glBufferFormat, OnRelease, glContext);
+			// var gpuBuffer = new GpuBuffer(glTextureBuffer);
 
-			AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
-			return;
+			// AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
+			// return;
 #endif
 
 			var width = texture.width;
@@ -233,7 +233,12 @@ namespace HardCoded.VRigUnity {
 			// NOTE: The origin is left-bottom corner in Unity, and right-top corner in MediaPipe.
 
 			// TODO: Check if this code can be removed?
+//* TODO: Android patch.
+#if UNITY_ANDROID
+			Rotation = imageSource.Rotation;
+#else
 			Rotation = imageSource.Rotation.Reverse();
+#endif
 			var inputRotation = Rotation;
 			var isInverted = Mediapipe.Unity.CoordinateSystem.ImageCoordinate.IsInverted(Rotation);
 			var shouldBeMirrored = imageSource.IsHorizontallyFlipped ^ expectedToBeMirrored ^ true;
