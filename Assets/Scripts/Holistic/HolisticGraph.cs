@@ -16,7 +16,12 @@ namespace HardCoded.VRigUnity {
 			Heavy = 2,
 		}
 
+#if UNITY_ANDROID
+		//* TODO: Android patch.
+		public ModelComplexity modelComplexity = ModelComplexity.Lite;
+#else
 		public ModelComplexity modelComplexity = ModelComplexity.Full;
+#endif
 
 		private float _minDetectionConfidence = 0.5f;
 		public float MinDetectionConfidence {
