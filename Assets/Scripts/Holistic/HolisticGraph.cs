@@ -16,7 +16,7 @@ namespace HardCoded.VRigUnity {
 			Heavy = 2,
 		}
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
 		//* TODO: Android patch.
 		public ModelComplexity modelComplexity = ModelComplexity.Lite;
 #else

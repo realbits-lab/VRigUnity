@@ -50,7 +50,7 @@ namespace Mediapipe.Unity
           yield break;
         }
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         _IsContextInitialized = SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES3;
         if (!_IsContextInitialized)
         {
@@ -75,7 +75,7 @@ namespace Mediapipe.Unity
           yield break;
         }
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         if (_CurrentContext == IntPtr.Zero)
         {
           Logger.LogWarning(_TAG, "EGL context is not found, so MediaPipe won't share their EGL contexts with Unity");
@@ -136,9 +136,9 @@ namespace Mediapipe.Unity
       IsInitialized = false;
     }
 
-    // Currently, it works only on Android
-#if UNITY_ANDROID
-    [AOT.MonoPInvokeCallback(typeof(PluginCallback))]
+        // Currently, it works only on Android
+#if UNITY_ANDROID || UNITY_IOS
+        [AOT.MonoPInvokeCallback(typeof(PluginCallback))]
     private static void GetCurrentContext(int eventId) {
       _CurrentContext = Egl.GetCurrentContext();
       _IsContextInitialized = true;

@@ -41,15 +41,17 @@ namespace HardCoded.VRigUnity {
 
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
-		 			//* TODO: Patch android.
-					//* In case of samsung note 10, graphic device type is vulkan.
-					return ConfigType.GPU;
+                    //* TODO: Patch android.
+                    //* In case of samsung note 10, graphic device type is vulkan.
+                    return ConfigType.GPU;
 
 					if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 && _openGlEsConfig != null) {
 						return ConfigType.OpenGLES;
 					}
+#elif UNITY_IOS
+					return ConfigType.CPU;
 #endif
-					if (_gpuConfig != null) {
+                    if (_gpuConfig != null) {
 						return ConfigType.GPU;
 					}
 				}
@@ -168,27 +170,27 @@ namespace HardCoded.VRigUnity {
 		protected void AddTextureFrameToInputStream(string streamName, Texture2D texture) {
 			latestTimestamp = GetCurrentTimestamp();
 
-#if UNITY_ANDROID
-			//* TODO: Handle GpuBuffer instead of ImageFrame.
-			// if (configType == ConfigType.OpenGLES) {
-			// 	var gpuBuffer = texture.BuildGpuBuffer(GpuManager.GlCalculatorHelper.GetGlContext());
-			// 	AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
-			// 	return;
-			// }
+#if UNITY_ANDROID || UNITY_IOS
+            //* TODO: Handle GpuBuffer instead of ImageFrame.
+            // if (configType == ConfigType.OpenGLES) {
+            // 	var gpuBuffer = texture.BuildGpuBuffer(GpuManager.GlCalculatorHelper.GetGlContext());
+            // 	AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
+            // 	return;
+            // }
 
-			// var glTextureName = (uint)texture.GetNativeTexturePtr();
-			// //* BGRA32 is the only supported format currently.
-			// var glBufferFormat = GpuBufferFormat.kBGRA32;
-			// var glContext = GpuManager.GlCalculatorHelper.GetGlContext();
-			// var glTextureBuffer = new GlTextureBuffer(glTextureName, texture.width, texture.height,
-			// 																					glBufferFormat, OnRelease, glContext);
-			// var gpuBuffer = new GpuBuffer(glTextureBuffer);
+            // var glTextureName = (uint)texture.GetNativeTexturePtr();
+            // //* BGRA32 is the only supported format currently.
+            // var glBufferFormat = GpuBufferFormat.kBGRA32;
+            // var glContext = GpuManager.GlCalculatorHelper.GetGlContext();
+            // var glTextureBuffer = new GlTextureBuffer(glTextureName, texture.width, texture.height,
+            // 																					glBufferFormat, OnRelease, glContext);
+            // var gpuBuffer = new GpuBuffer(glTextureBuffer);
 
-			// AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
-			// return;
+            // AddPacketToInputStream(streamName, new GpuBufferPacket(gpuBuffer, latestTimestamp));
+            // return;
 #endif
 
-			var width = texture.width;
+            var width = texture.width;
 			var height = texture.height;
 			var format = texture.format;
 			var imageFrame = new ImageFrame(format.ToImageFormat(), width, height, 4 * width, texture.GetRawTextureData<byte>());
@@ -254,9 +256,9 @@ namespace HardCoded.VRigUnity {
 		}
 
 		protected WaitForResult WaitForAsset(string assetName) {
-		//* TODO: Android patch.
-#if UNITY_ANDROID
-			bool overwrite = false;
+            //* TODO: Android patch.
+#if UNITY_ANDROID || UNITY_IOS
+            bool overwrite = false;
 			return new WaitForResult(this, SolutionUtils.GetStreamingAssetsResourceManager().PrepareAssetAsync(assetName, assetName, overwrite));
 #else
 			bool overwrite = false;
