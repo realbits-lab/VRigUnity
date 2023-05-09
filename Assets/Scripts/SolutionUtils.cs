@@ -4,6 +4,7 @@ namespace HardCoded.VRigUnity {
 	public class SolutionUtils {
 		private static HolisticSolution _solution;
 		private static AssetManager _assetManager;
+		//* TODO: Android patch.
 		private static StreamingAssetsResourceManager _streamingAssetResourceManager;
 		private static WebCamSource _webCamSource;
 		private static Bootstrap _bootstrap;
@@ -39,6 +40,7 @@ namespace HardCoded.VRigUnity {
 			return _webCamSource;
 		}
 
+		//* TODO: Android patch.
 		public static StreamingAssetsResourceManager GetStreamingAssetsResourceManager() {
 			if (_streamingAssetResourceManager == null) {
 				_streamingAssetResourceManager = GetBootstrap().GetStreamingAssetsResourceManager();

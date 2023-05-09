@@ -254,6 +254,7 @@ namespace HardCoded.VRigUnity {
 		}
 
 		protected WaitForResult WaitForAsset(string assetName) {
+		//* TODO: Android patch.
 #if UNITY_ANDROID
 			bool overwrite = false;
 			return new WaitForResult(this, SolutionUtils.GetStreamingAssetsResourceManager().PrepareAssetAsync(assetName, assetName, overwrite));

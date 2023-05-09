@@ -11,6 +11,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
+//* TODO: Android patch.
 namespace HardCoded.VRigUnity
 {
   public class StreamingAssetsResourceManager : ResourceManager

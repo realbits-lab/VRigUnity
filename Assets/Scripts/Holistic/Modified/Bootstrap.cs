@@ -70,7 +70,7 @@ namespace HardCoded.VRigUnity {
 			// Initialize mediapipe
 			Protobuf.SetLogHandler(Protobuf.DefaultLogHandler);
 			
-//* TODO: Patch android.
+//* TODO: Android patch.
 #if UNITY_ANDROID
 			Logger.Info(_TAG, "Initializing StreamingAssetResourceManager...");
 			_streamingAssetResourceManager = new StreamingAssetsResourceManager();
