@@ -1,6 +1,8 @@
+using HardCoded.VRigUnity;
 using Mediapipe.Unity;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -18,24 +20,27 @@ namespace HardCoded.VRigUnity {
 		/// <summary>
 		/// Default resolutions
 		/// </summary>
-		public readonly ResolutionStruct[] AvailableResolutions = new ResolutionStruct[] {
-			new(1920, 1080, 30),
-			new(1600, 896, 30),
-			new(1280, 720, 30),
-			new(960, 540, 30),
-			new(848, 480, 30),
-			new(640, 480, 30),
-			new(640, 360, 30),
-			new(424, 240, 30),
-			//* TODO: Android patch.
-			// new(320, 180, 30), // 320x240 -> 16:19 better
-			new(320, 180, 10), // 320x240 -> 16:19 better
-			new(176, 144, 30),
-		};
+		public List<ResolutionStruct> AvailableResolutions => availableResolutions;
+		public List<ResolutionStruct> availableResolutions = new List<ResolutionStruct>();
+		//public readonly ResolutionStruct[] AvailableResolutions = new ResolutionStruct[] {
+		//	new(1920, 1080, 30),
+		//	new(1600, 896, 30),
+		//	new(1280, 720, 30),
+		//	new(960, 540, 30),
+		//	new(848, 480, 30),
+		//	new(640, 480, 30),
+		//	new(640, 360, 30),
+		//	new(424, 240, 30),
+		//	//* TODO: Android patch.
+		//	// new(320, 180, 30), // 320x240 -> 16:19 better
+		//	new(320, 180, 10), // 320x240 -> 16:19 better
+		//	new(176, 144, 30),
+		//};
 		// public ResolutionStruct DefaultResolution => AvailableResolutions[6];
-		public ResolutionStruct DefaultResolution => AvailableResolutions[8];
+		public ResolutionStruct DefaultResolution => AvailableResolutions.Find(obj => true);
 
-		public override Texture CurrentTexture => webCamTexture;
+
+        public override Texture CurrentTexture => webCamTexture;
 		public override int TextureWidth => IsPrepared ? webCamTexture.width : 0;
 		public override int TextureHeight => IsPrepared ? webCamTexture.height : 0;
 		public override bool IsPrepared => webCamTexture != null;
@@ -83,7 +88,7 @@ namespace HardCoded.VRigUnity {
 		}
 
 		public override ResolutionStruct[] GetResolutions() {
-			return AvailableResolutions;
+			return AvailableResolutions.ToArray();
 		}
 
 		public IEnumerator UpdateSources() {
@@ -95,14 +100,23 @@ namespace HardCoded.VRigUnity {
 			}
 
 			availableSources = WebCamTexture.devices;
+            availableResolutions.Clear();
+            foreach (var device in availableSources)
+            {
+                foreach (Resolution resolution in device.availableResolutions)
+                {
+                    availableResolutions.Add(new ResolutionStruct(resolution, device.isFrontFacing));
+                }
+            }
+            
 			if (availableSources != null && availableSources.Length > 0) {
-				webCamDevice = availableSources[0];
-			}
+                webCamDevice = availableSources[0];
+            }
 
-			isInitialized = true;
-		}
+            isInitialized = true;
+        }
 
-		private IEnumerator GetPermission() {
+        private IEnumerator GetPermission() {
 			lock (_PermissionLock) {
 				if (_IsPermitted) {
 					yield break;
@@ -178,8 +192,8 @@ namespace HardCoded.VRigUnity {
 			if (webCamDevice is WebCamDevice valueOfWebCamDevice) {
 				//* TODO: Android patch test.
 				Logger.Verbose($"valueOfWebCamDevice.name: {valueOfWebCamDevice.name}");
-				// webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, Resolution.width, Resolution.height, (int)Resolution.frameRate);
-				webCamTexture = new WebCamTexture("Camera 1", Resolution.width, Resolution.height, (int)Resolution.frameRate);
+				webCamTexture = new WebCamTexture(valueOfWebCamDevice.name, Resolution.width, Resolution.height, (int)Resolution.frameRate);
+				//webCamTexture = new WebCamTexture("Camera 1", Resolution.width, Resolution.height, (int)Resolution.frameRate);
 				Logger.Verbose($"webCamTexture: {webCamTexture}");
 				Logger.Verbose($"webCamTexture.videoRotationAngle: {webCamTexture.videoRotationAngle}");
 				return;
@@ -222,7 +236,7 @@ namespace HardCoded.VRigUnity {
 
 		public void SelectResolution(int resolutionId) {
 			var resolutions = AvailableResolutions;
-			if (resolutionId < 0 || resolutionId >= resolutions.Length) {
+			if (resolutionId < 0 || resolutionId >= resolutions.Count) {
 				throw new ArgumentException($"Invalid resolution ID: {resolutionId}");
 			}
 

@@ -56,7 +56,7 @@ namespace HardCoded.VRigUnity {
 				int.TryParse(parts[2], out frameRate);
 			}
 
-			ResolutionStruct r = new(width, height, frameRate);
+			ResolutionStruct r = new(width, height, frameRate, false);
 			return r;
 		}
 

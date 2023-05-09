@@ -7,18 +7,22 @@ namespace HardCoded.VRigUnity {
 		public int width;
 		public int height;
 		public double frameRate;
+		public bool isFront;
 		
-		public ResolutionStruct(int width, int height, double frameRate) {
+		public ResolutionStruct(int width, int height, double frameRate, bool isFront) {
 			this.width = width;
 			this.height = height;
 			this.frameRate = frameRate;
-		}
+            this.isFront = isFront;
+        }
 
-		public ResolutionStruct(Resolution resolution) {
+		public ResolutionStruct(Resolution resolution, bool isFront) {
 			width = resolution.width;
 			height = resolution.height;
 			frameRate = resolution.refreshRate;
-		}
+			this.isFront = isFront;
+
+        }
 
 		public Resolution ToResolution() {
 			return new() { width = width, height = height, refreshRate = (int)frameRate };
