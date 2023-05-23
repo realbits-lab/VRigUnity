@@ -50,7 +50,7 @@ namespace Mediapipe.Unity
           yield break;
         }
 
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID
         _IsContextInitialized = SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES3;
         if (!_IsContextInitialized)
         {
@@ -137,7 +137,7 @@ namespace Mediapipe.Unity
     }
 
         // Currently, it works only on Android
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID
         [AOT.MonoPInvokeCallback(typeof(PluginCallback))]
     private static void GetCurrentContext(int eventId) {
       _CurrentContext = Egl.GetCurrentContext();
