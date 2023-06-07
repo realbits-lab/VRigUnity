@@ -90,8 +90,12 @@ namespace HardCoded.VRigUnity {
 			}
 
 			string issText = File.ReadAllText("installer.iss");
-			if (!issText.Contains($"#define MyAppVersion \"{resultVersion[1..]}\"")) {
-				Debug.LogError($"'installer.iss' version is not '{resultVersion[1..]}'");
+			//* Patch : We changed v0.5.0 to 0.5.0.
+			// if (!issText.Contains($"#define MyAppVersion \"{resultVersion[1..]}\"")) {
+			// 	Debug.LogError($"'installer.iss' version is not '{resultVersion[1..]}'");
+			// }
+			if (!issText.Contains($"#define MyAppVersion \"{resultVersion[0..]}\"")) {
+				Debug.LogError($"'installer.iss' version is not '{resultVersion[0..]}'");
 			}
 		}
 #endif
