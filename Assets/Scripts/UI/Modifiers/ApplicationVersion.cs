@@ -68,7 +68,9 @@ namespace HardCoded.VRigUnity {
 			}
 
 			string[] parts = describedTag[1..].Split(".");
-			string targetVersion = $"v{int.Parse(parts[0])}.{int.Parse(parts[1]) + 1}.0";
+			//* Patch: IOS version should be started with number.
+			// string targetVersion = $"v{int.Parse(parts[0])}.{int.Parse(parts[1]) + 1}.0";
+			string targetVersion = $"{int.Parse(parts[0])}.{int.Parse(parts[1]) + 1}.0";
 
 			string resultVersion = targetVersion;
 			if (File.Exists(".version")) {
