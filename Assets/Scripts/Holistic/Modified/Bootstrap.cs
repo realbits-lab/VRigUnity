@@ -69,10 +69,10 @@ namespace HardCoded.VRigUnity {
 		private IEnumerator Init() {
 			// Initialize mediapipe
 			Protobuf.SetLogHandler(Protobuf.DefaultLogHandler);
-			
-//* TODO: Android patch.
-#if UNITY_ANDROID
-			Logger.Info(_TAG, "Initializing StreamingAssetResourceManager...");
+
+            //* TODO: Android patch.
+#if UNITY_ANDROID || UNITY_IOS
+            Logger.Info(_TAG, "Initializing StreamingAssetResourceManager...");
 			_streamingAssetResourceManager = new StreamingAssetsResourceManager();
 #else
 			Logger.Info(_TAG, "Initializing AssetManager...");
@@ -96,7 +96,7 @@ namespace HardCoded.VRigUnity {
 		}
 
 		private void DecideInferenceMode() {
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID
 			InferenceMode = InferenceMode.Gpu;
 #else
 			InferenceMode = InferenceMode.Cpu;
