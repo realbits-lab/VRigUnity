@@ -39,6 +39,11 @@ namespace HardCoded.VRigUnity {
 				// Debug.Log("-- SystemInfo.graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
 				// Debug.Log("-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: " + UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3);
 
+				Logger.Info(TAG, $"-- call configType");
+				Logger.Info(TAG, $"-- GpuManager.IsInitialized: {GpuManager.IsInitialized}");
+				Logger.Info(TAG, $"-- SystemInfo.graphicsDeviceType: {SystemInfo.graphicsDeviceType}");
+				Logger.Info(TAG, $"-- UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3: {UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3}");
+
 				if (GpuManager.IsInitialized) {
 #if UNITY_ANDROID
                     //* TODO: Patch android.
@@ -49,9 +54,9 @@ namespace HardCoded.VRigUnity {
 						return ConfigType.OpenGLES;
 					}
 #elif UNITY_IOS
-					return ConfigType.CPU;
+					return ConfigType.GPU;
 #endif
-                    if (_gpuConfig != null) {
+          if (_gpuConfig != null) {
 						return ConfigType.GPU;
 					}
 				}
@@ -59,12 +64,13 @@ namespace HardCoded.VRigUnity {
 			}
 		}
 
-		public TextAsset TextConfig => configType switch {
-			ConfigType.CPU => _cpuConfig,
-			ConfigType.GPU => _gpuConfig,
-			ConfigType.OpenGLES => _openGlEsConfig,
-			_ => null,
-		};
+		// public TextAsset TextConfig => configType switch {
+		// 	ConfigType.CPU => _cpuConfig,
+		// 	ConfigType.GPU => _gpuConfig,
+		// 	ConfigType.OpenGLES => _openGlEsConfig,
+		// 	_ => null,
+		// };
+		public TextAsset TextConfig => _gpuConfig;
 
 		public long TimeoutMicrosec {
 			get => _timeoutMicrosec;
@@ -95,7 +101,8 @@ namespace HardCoded.VRigUnity {
 		}
 
 		public virtual IEnumerator InitializeAsync() {
-			Logger.Info(TAG, $"Config Type = {configType}");
+			Logger.Info(TAG, $"-- call InitializeAsync()");
+			Logger.Info(TAG, $"-- Config Type = {configType}");
 
 			InitializeCalculatorGraph().AssertOk();
 			_stopwatch = new Stopwatch();
@@ -207,6 +214,9 @@ namespace HardCoded.VRigUnity {
 		}
 
 		protected Status InitializeCalculatorGraph() {
+			Logger.Info(TAG, $"-- call InitializeCalculatorGraph()");
+			Logger.Info(TAG, $"-- TextConfig: {TextConfig}");
+
 			CalculatorGraph = new CalculatorGraph();
 			_NameTable.Add(CalculatorGraph.mpPtr, GetInstanceID());
 
@@ -219,6 +229,7 @@ namespace HardCoded.VRigUnity {
 			//	 The following code is not very efficient, but it will return Non-OK status when an invalid configuration is given.
 			try {
 				var baseConfig = TextConfig == null ? null : CalculatorGraphConfig.Parser.ParseFromTextFormat(TextConfig.text);
+				Logger.Info(TAG, $"-- baseConfig: {baseConfig}");
 				if (baseConfig == null) {
 					throw new InvalidOperationException("Failed to get the text config. Check if the config is set to GraphRunner");
 				}
